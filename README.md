@@ -70,7 +70,8 @@ curl -X POST http://localhost:8080/api/transfers/optimal \
     "cost" : 10
   } ],
   "totalCost" : 30,
-  "totalWeight" : 15
+  "totalWeight" : 15,
+  "boxedTransfers" : [ ]
 }
 ```
 
@@ -92,7 +93,9 @@ curl -X POST http://localhost:8080/api/transfers/optimal \
 {
   "selectedTransfers" : [ ],
   "totalCost" : 0,
-  "totalWeight" : 0
+  "totalWeight" : 0,
+  "boxedTransfers" : [ ]
+
 }
 ```
 
@@ -116,9 +119,12 @@ curl -X POST http://localhost:8080/api/transfers/optimal \
 {
   "selectedTransfers" : [ ],
   "totalCost" : 0,
-  "totalWeight" : 0
+  "totalWeight" : 0,
+  "boxedTransfers" : [ ]
+
 }
 ```
+
 
 ### **Invalid API endpoint**
 
@@ -156,6 +162,141 @@ curl -X POST http://localhost:8080/api/transfers/optimal \
   "status" : 400,
   "error" : "Bad Request",
   "path" : "/api/transfers/optimal"
+}
+```
+
+## Transfers using boxes which have their maxWeight
+**Request**
+```bash
+curl -X POST http://localhost:8080/api/transfers/boxes \
+-H "Content-Type: application/json" \
+-d '{
+  "selectedTransfers" : [ ],
+  "maxWeight": 45,
+  "maxBoxWeight": 20,
+  "availableTransfers": [
+    {
+      "weight": 15,
+      "cost": 15
+    },
+    {
+      "weight": 10,
+      "cost": 10
+    },
+    {
+      "weight": 9,
+      "cost": 9
+    },
+    {
+      "weight": 5,
+      "cost": 5
+    },
+    {
+      "weight": 4,
+      "cost": 4
+    },
+    {
+      "weight": 3,
+      "cost": 3
+    }
+  ]
+}'
+```
+
+**Response**
+```json
+{
+  "totalWeight": 43,
+  "totalCost": 43,
+  "boxes": [
+    [
+      {
+        "weight": 15,
+        "cost": 15
+      },
+      {
+        "weight": 5,
+        "cost": 5
+      }
+    ],
+    [
+      {
+        "weight": 10,
+        "cost": 10
+      },
+      {
+        "weight": 9,
+        "cost": 9
+      }
+    ],
+    [
+      {
+        "weight": 4,
+        "cost": 4
+      }
+    ]
+   ]
+}
+```
+
+**Request**
+```bash
+curl -X POST http://localhost:8080/api/transfers/boxes \
+-H "Content-Type: application/json" \
+-d '{
+  "maxWeight": 25,
+  "maxBoxWeight": 10,
+  "availableTransfers": [
+    {
+      "weight": 6,
+      "cost": 6
+    },
+    {
+      "weight": 6,
+      "cost": 6
+    },
+    {
+      "weight": 6,
+      "cost": 6
+    },
+    {
+      "weight": 6,
+      "cost": 6
+    },
+    {
+      "weight": 4,
+      "cost": 4
+    }
+  ]
+}'
+```
+
+**Response**
+```json
+{
+  "selectedTransfers" : [ ],
+  "totalCost" : 16,
+  "totalWeight" : 16,
+  "boxedTransfers" : [ 
+    [ 
+      {
+        "weight" : 4,
+        "cost" : 4
+      }, 
+      {
+      "weight" : 6,
+      "cost" : 6
+      } 
+    ], 
+    [ 
+      {
+      "weight" : 6,
+      "cost" : 6
+      } 
+    ], 
+    [
+    ] 
+  ]
 }
 ```
 
