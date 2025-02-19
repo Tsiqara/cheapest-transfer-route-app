@@ -29,7 +29,7 @@ public class TransferControllerIntegrationTest {
     public void testValidRequest() throws Exception {
         Transfer t1 = new Transfer(5, 10);
         Transfer t2 = new Transfer(10,20);
-        TransferRequest request = new TransferRequest(15, Arrays.asList(t1, t2));
+        TransferRequest request = new TransferRequest(15, 0, Arrays.asList(t1, t2));
 
         mockMvc.perform(post("/api/transfers/optimal")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -43,7 +43,7 @@ public class TransferControllerIntegrationTest {
 
     @Test
     public void testValidRequestWithEmptyAvailableTransfers() throws Exception {
-        TransferRequest request = new TransferRequest(15, new ArrayList<>());
+        TransferRequest request = new TransferRequest(15, 0, new ArrayList<>());
 
         mockMvc.perform(post("/api/transfers/optimal")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -61,7 +61,7 @@ public class TransferControllerIntegrationTest {
         Transfer t2 = new Transfer(10,20);
         Transfer t3 = new Transfer(3, 5);
         Transfer t4 = new Transfer(8,15);
-        TransferRequest request = new TransferRequest(2, Arrays.asList(t1, t2, t3, t4));
+        TransferRequest request = new TransferRequest(2, 0, Arrays.asList(t1, t2, t3, t4));
 
         mockMvc.perform(post("/api/transfers/optimal")
                 .contentType(MediaType.APPLICATION_JSON)

@@ -23,4 +23,10 @@ public class TransferController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/boxes")
+    public ResponseEntity<TransferResponse> findOptimalRouteWithBoxes(@RequestBody TransferRequest request){
+        TransferResponse response = transferService.findOptimalTransfersForBoxes(request);
+        return ResponseEntity.ok(response);
+    }
+
 }

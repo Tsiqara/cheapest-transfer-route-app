@@ -19,7 +19,7 @@ public class TransferServiceTest {
     public void testChooseAll() {
         Transfer t1 = new Transfer(5, 10);
         Transfer t2 = new Transfer(10,20);
-        TransferRequest request = new TransferRequest(15, Arrays.asList(t1, t2));
+        TransferRequest request = new TransferRequest(15, 0, Arrays.asList(t1, t2));
 
         TransferResponse response = transferService.findOptimalRoute(request);
 
@@ -35,7 +35,7 @@ public class TransferServiceTest {
         Transfer t2 = new Transfer(10,20);
         Transfer t3 = new Transfer(3, 5);
         Transfer t4 = new Transfer(8,15);
-        TransferRequest request = new TransferRequest(15, Arrays.asList(t1, t2, t3, t4));
+        TransferRequest request = new TransferRequest(15, 0, Arrays.asList(t1, t2, t3, t4));
 
         TransferResponse response = transferService.findOptimalRoute(request);
 
@@ -48,7 +48,7 @@ public class TransferServiceTest {
 
     @Test
     public void testEmptyAvailableTransfers() {
-        TransferRequest request = new TransferRequest(20, new ArrayList<>());
+        TransferRequest request = new TransferRequest(20, 0, new ArrayList<>());
 
         TransferResponse response = transferService.findOptimalRoute(request);
 
@@ -64,7 +64,7 @@ public class TransferServiceTest {
         Transfer t2 = new Transfer(10,20);
         Transfer t3 = new Transfer(3, 5);
         Transfer t4 = new Transfer(8,15);
-        TransferRequest request = new TransferRequest(2, Arrays.asList(t1, t2, t3, t4));
+        TransferRequest request = new TransferRequest(2, 0, Arrays.asList(t1, t2, t3, t4));
 
         TransferResponse response = transferService.findOptimalRoute(request);
         assertNotNull(response);

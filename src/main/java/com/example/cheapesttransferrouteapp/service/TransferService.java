@@ -47,4 +47,48 @@ public class TransferService {
         }
         return new TransferResponse(selectedTransfers, totalCost, totalWeight);
     }
+
+
+    public TransferResponse findOptimalTransfersForBoxes(TransferRequest request){
+        if (request == null || request.getAvailableTransfers() == null) {
+            throw new IllegalArgumentException("Invalid request parameters");
+        }
+
+        int maxWeight = request.getMaxWeight();
+        int maxBoxWeight = request.getMaxBoxWeight();
+        List<Transfer> availableTransfers = request.getAvailableTransfers();
+
+        int totalWeight = 0;
+        int totalCost = 0;
+
+        List<List<Transfer> > boxedTransfers = new ArrayList<>();
+
+        int maxWeightLastBox = maxWeight % maxBoxWeight;
+
+        int n = maxWeight / maxBoxWeight;
+
+        if(maxWeightLastBox != 0){
+            n += 1;
+        }
+
+        for(int i = 0; i < n; i ++) {
+            TransferRequest request1 = new TransferRequest(maxBoxWeight, 0, availableTransfers);
+
+            if(i == n - 1){
+                request1.setMaxWeight(maxWeightLastBox);
+            }
+
+            TransferResponse response = findOptimalRoute(request1);
+            totalWeight += response.getTotalWeight();
+            totalCost += response.getTotalCost();
+
+            List<Transfer> chosenTransfers = response.getSelectedTransfers();
+            boxedTransfers.add(chosenTransfers);
+
+            availableTransfers.removeAll(chosenTransfers);
+        }
+
+
+        return new TransferResponse(totalCost, totalWeight, boxedTransfers);
+    }
 }
